@@ -2,24 +2,24 @@
 #include<vector>
 using namespace std;
 
-//¶¨Òå½áµã
+//å®šä¹‰ç»“ç‚¹
 class AVLnode {
 public:
-	int val;      //½ÚµãµÄÖµ
-	AVLnode* lchild, * rchild, * parent;    //Ö¸Õë£¬×óÓÒº¢×Ó£¬¸¸½Úµã
-	int tag;              //Æ½ºâÒò×Ó
+	int val;      //èŠ‚ç‚¹çš„å€¼
+	AVLnode* lchild, * rchild, * parent;    //æŒ‡é’ˆï¼Œå·¦å³å­©å­ï¼Œçˆ¶èŠ‚ç‚¹
+	int tag;              //å¹³è¡¡å› å­
 
 	AVLnode(int x) : val(x), tag(0), lchild(nullptr),
-		rchild(nullptr), parent(nullptr) {} //¹¹Ôìº¯Êı
+		rchild(nullptr), parent(nullptr) {} //æ„é€ å‡½æ•°
 };
 
-//¶¨ÒåAVLÆ½ºâ¶ş²æÊ÷
+//å®šä¹‰AVLå¹³è¡¡äºŒå‰æ ‘
 class AVLtree {
 private:
-	AVLnode* root;      //¸ù½Úµã
+	AVLnode* root;      //æ ¹èŠ‚ç‚¹
 public:
-	AVLtree() :root(nullptr) {}      //¹¹Ôìº¯Êı
-	~AVLtree()      //Îö¹¹º¯Êı
+	AVLtree() :root(nullptr) {}      //æ„é€ å‡½æ•°
+	~AVLtree()      //ææ„å‡½æ•°
 	{
 		clear(root);
 	}
@@ -34,17 +34,17 @@ public:
 		delete p;
 	}
 
-	//»ñÈ¡Æ½ºâÒò×Ó
+	//è·å–å¹³è¡¡å› å­
 	int get_tag(AVLnode* root1)
 	{
-		if (!root1)      //¿Õ½Úµã
+		if (!root1)      //ç©ºèŠ‚ç‚¹
 			return 0;
 		int lh = get_hight(root1->lchild);
 		int rh = get_hight(root1->rchild);
 		return abs(lh - rh);
 	}
 
-	//»ñÈ¡Ê÷¸ß
+	//è·å–æ ‘é«˜
 	int get_hight(AVLnode* T)
 	{
 		int lh = 0, rh = 0;
@@ -55,7 +55,7 @@ public:
 		return lh > rh ? lh + 1 : rh + 1;
 	}
 
-	//¸üĞÂÆ½ºâÒò×Ó
+	//æ›´æ–°å¹³è¡¡å› å­
 	void tag_update(AVLnode* p) {
 		if (!p)
 			return;
@@ -64,79 +64,79 @@ public:
 		p->tag = get_tag(p);
 	}
 
-	//½ö²åÈë½Úµã£¬ÀûÓÃ¶ş²æÅÅĞòÊ÷µÄ²åÈë·½Ê½
+	//ä»…æ’å…¥èŠ‚ç‚¹ï¼Œåˆ©ç”¨äºŒå‰æ’åºæ ‘çš„æ’å…¥æ–¹å¼
 	bool BST_insert(AVLnode* p, int x, AVLnode*& k)
 	{
 		if (p == nullptr)
 		{
-			// ´´½¨ĞÂ½Úµã
+			// åˆ›å»ºæ–°èŠ‚ç‚¹
 			AVLnode* temp = new AVLnode(x);
 			k = temp;
-			// Èç¹ûµ±Ç°²åÈëÎ»ÖÃÊÇ¸ù½Úµã£¬Ôò¸üĞÂ¸ù½Úµã
+			// å¦‚æœå½“å‰æ’å…¥ä½ç½®æ˜¯æ ¹èŠ‚ç‚¹ï¼Œåˆ™æ›´æ–°æ ¹èŠ‚ç‚¹
 			if (p == root) {
 				root = temp;
 			}
 			return true;
 		}
-		else if (x == p->val)     // ÖµÒÑ´æÔÚ£¬²»ÖØ¸´²åÈë
+		else if (x == p->val)     // å€¼å·²å­˜åœ¨ï¼Œä¸é‡å¤æ’å…¥
 		{
 			return false;
 		}
-		else if (x < p->val)   // ²åÈëµ½×ó×ÓÊ÷
+		else if (x < p->val)   // æ’å…¥åˆ°å·¦å­æ ‘
 		{
 			bool res = BST_insert(p->lchild, x, k);
-			if (res)            // ¸üĞÂ²åÈë½áµãµÄ¸¸½Úµã
+			if (res)            // æ›´æ–°æ’å…¥ç»“ç‚¹çš„çˆ¶èŠ‚ç‚¹
 			{
-				p->lchild = k;  // È·±£×Ó½ÚµãÖ¸ÕëÒ²¸üĞÂ
+				p->lchild = k;  // ç¡®ä¿å­èŠ‚ç‚¹æŒ‡é’ˆä¹Ÿæ›´æ–°
 				k->parent = p;
 			}
 			return res;
 		}
-		else              // ²åÈëµ½ÓÒ×ÓÊ÷
+		else              // æ’å…¥åˆ°å³å­æ ‘
 		{
 			bool res = BST_insert(p->rchild, x, k);
-			if (res)            // ¸üĞÂ²åÈë½áµãµÄ¸¸½Úµã
+			if (res)            // æ›´æ–°æ’å…¥ç»“ç‚¹çš„çˆ¶èŠ‚ç‚¹
 			{
-				p->rchild = k;  // È·±£×Ó½ÚµãÖ¸ÕëÒ²¸üĞÂ
+				p->rchild = k;  // ç¡®ä¿å­èŠ‚ç‚¹æŒ‡é’ˆä¹Ÿæ›´æ–°
 				k->parent = p;
 			}
 			return res;
 		}
 	}
 
-	//²åÈëÔªËØ£¬²¢µ÷ÕûÆ½ºâ¶ş²æÊ÷
+	//æ’å…¥å…ƒç´ ï¼Œå¹¶è°ƒæ•´å¹³è¡¡äºŒå‰æ ‘
 	void insert(int x)
 	{
 		AVLnode* k = nullptr;
 		bool is_insert = BST_insert(root, x, k);
-		if (!is_insert)     //²åÈëÊ§°Ü
+		if (!is_insert)     //æ’å…¥å¤±è´¥
 		{
-			cout << "²åÈëÊ§°Ü£¬¸Ã½ÚµãÒÑ´æÔÚ" << endl;
+			cout << "æ’å…¥å¤±è´¥ï¼Œè¯¥èŠ‚ç‚¹å·²å­˜åœ¨" << endl;
 			return;
 		}
-		tag_update(root);    //¸üĞÂÆ½ºâÒò×Ó
+		tag_update(root);    //æ›´æ–°å¹³è¡¡å› å­
 		AVLnode* newpoint = k;
-		while (k->parent && abs(k->parent->tag) < 2)   //ÏòÉÏÑ°ÕÒµÚÒ»¸öÆ½ºâÒò×ÓÒì³£µÄµã
+		while (k->parent && abs(k->parent->tag) < 2)   //å‘ä¸Šå¯»æ‰¾ç¬¬ä¸€ä¸ªå¹³è¡¡å› å­å¼‚å¸¸çš„ç‚¹
 		{
 			k = k->parent;
 		}
-		//kÊÇ¸ù½Úµã
+		//kæ˜¯æ ¹èŠ‚ç‚¹
 		if (k == root)
 		{
-			if (k->tag < 2)    //Î´³öÏÖÒì³£
+			if (k->tag < 2)    //æœªå‡ºç°å¼‚å¸¸
 				return;
-			//³öÏÖÒì³£µÄÊÇ¸ù½Úµã
+			//å‡ºç°å¼‚å¸¸çš„æ˜¯æ ¹èŠ‚ç‚¹
 			else {
-				//²åÈë½áµãÊÇ×óº¢×Ó
+				//æ’å…¥ç»“ç‚¹æ˜¯å·¦å­©å­
 				if (newpoint->parent->lchild && newpoint == newpoint->parent->lchild)
 				{
 					AVLnode* temp = newpoint;
-					while (temp->parent != k)//ÏòÉÏÑ°ÕÒ£¬´ËÊ±tempÎªkµÄº¢×Ó
+					while (temp->parent != k)//å‘ä¸Šå¯»æ‰¾ï¼Œæ­¤æ—¶tempä¸ºkçš„å­©å­
 						temp = temp->parent;
-					//ÔÚkµÄ×ó×ÓÊ÷µÄ×óº¢×ÓÖĞµÄ²åÈë LL
+					//åœ¨kçš„å·¦å­æ ‘çš„å·¦å­©å­ä¸­çš„æ’å…¥ LL
 					if (k->lchild && k->lchild == temp)
 					{
-						//Ğı×ª²Ù×÷£¬Ò»´ÎÓÒµ¥Ğı
+						//æ—‹è½¬æ“ä½œï¼Œä¸€æ¬¡å³å•æ—‹
 						k->lchild = temp->rchild;
 						if (temp->rchild)
 							temp->rchild->parent = k;
@@ -144,49 +144,49 @@ public:
 						k->parent = temp;
 						temp->parent = nullptr;
 						root = temp;
-						//¸üĞÂÆ½ºâÒò×Ó
+						//æ›´æ–°å¹³è¡¡å› å­
 						tag_update(root);
 					}
-					//ÔÚkµÄÓÒ×ÓÊ÷µÄ×óº¢×ÓÖĞµÄ²åÈë  RL
+					//åœ¨kçš„å³å­æ ‘çš„å·¦å­©å­ä¸­çš„æ’å…¥  RL
 					else if (k->rchild && k->rchild == temp)
 					{
-						// ÕÒµ½ k µÄÓÒ×ÓÊ÷µÄ×óº¢×Ó q
+						// æ‰¾åˆ° k çš„å³å­æ ‘çš„å·¦å­©å­ q
 						AVLnode* q = temp->lchild;
-						// µÚÒ»´ÎĞı×ª£¨ÓÒĞı£©
+						// ç¬¬ä¸€æ¬¡æ—‹è½¬ï¼ˆå³æ—‹ï¼‰
 						temp->rchild = q->rchild;
 						if (q->rchild)
 							q->rchild->parent = temp;
 						q->rchild = temp;
 						temp->parent = q;
-						// µÚ¶ş´ÎĞı×ª£¨×óĞı£©
+						// ç¬¬äºŒæ¬¡æ—‹è½¬ï¼ˆå·¦æ—‹ï¼‰
 						k->rchild = q->lchild;
 						if (q->lchild)
 							q->lchild->parent = k;
 						q->lchild = k;
 						k->parent = q;
 						q->parent = nullptr;
-						root = q;   // q ÏÖÔÚ³ÉÎªĞÂµÄ¸ù½Úµã
-						// ¸üĞÂÆ½ºâÒò×Ó
+						root = q;   // q ç°åœ¨æˆä¸ºæ–°çš„æ ¹èŠ‚ç‚¹
+						// æ›´æ–°å¹³è¡¡å› å­
 						tag_update(root);
 					}
 				}
-				//²åÈë½áµãÊÇÓÒº¢×Ó
+				//æ’å…¥ç»“ç‚¹æ˜¯å³å­©å­
 				else if (newpoint->parent->rchild && newpoint == newpoint->parent->rchild)
 				{
 					AVLnode* temp = newpoint;
-					while (temp->parent != k)//ÏòÉÏÑ°ÕÒ£¬´ËÊ±tempÎªkµÄº¢×Ó
+					while (temp->parent != k)//å‘ä¸Šå¯»æ‰¾ï¼Œæ­¤æ—¶tempä¸ºkçš„å­©å­
 						temp = temp->parent;
-					//ÔÚkµÄ×ó×ÓÊ÷µÄÓÒº¢×ÓÖĞµÄ²åÈë LR
+					//åœ¨kçš„å·¦å­æ ‘çš„å³å­©å­ä¸­çš„æ’å…¥ LR
 					if (k->lchild && k->lchild == temp)
 					{
 						AVLnode* q = temp->rchild;
-						//µÚÒ»´Î×óµ¥Ğı
+						//ç¬¬ä¸€æ¬¡å·¦å•æ—‹
 						temp->rchild = q->lchild;
 						if (q->lchild)
 							q->lchild->parent = temp;
 						q->rchild = temp;
 						temp->parent = q;
-						//µÚ¶ş´ÎÓÒµ¥Ğı
+						//ç¬¬äºŒæ¬¡å³å•æ—‹
 						k->lchild = q->rchild;
 						if (q->rchild)
 							q->rchild->parent = k;
@@ -194,13 +194,13 @@ public:
 						k->parent = q;
 						q->parent = nullptr;
 						root = q;
-						//¸üĞÂÆ½ºâÒò×Ó
+						//æ›´æ–°å¹³è¡¡å› å­
 						tag_update(root);
 					}
-					//ÔÚkµÄÓÒ×ÓÊ÷µÄÓÒº¢×ÓÖĞµÄ²åÈë  RR
+					//åœ¨kçš„å³å­æ ‘çš„å³å­©å­ä¸­çš„æ’å…¥  RR
 					else if (k->rchild && k->rchild == temp)
 					{
-						//Ğı×ª²Ù×÷£¬×óµ¥Ğı
+						//æ—‹è½¬æ“ä½œï¼Œå·¦å•æ—‹
 						k->rchild = temp->lchild;
 						if (temp->lchild)
 							temp->lchild->parent = k;
@@ -208,121 +208,121 @@ public:
 						k->parent = temp;
 						temp->parent = nullptr;
 						root = temp;
-						//¸üĞÂÆ½ºâÒò×Ó
+						//æ›´æ–°å¹³è¡¡å› å­
 						tag_update(root);
 					}
 				}
 			}
 		}
-		//kÊÇ·ÖÖ§½áµã
+		//kæ˜¯åˆ†æ”¯ç»“ç‚¹
 		else if (k != root)
 		{
-			//²åÈë½áµãÊÇ×óº¢×Ó
+			//æ’å…¥ç»“ç‚¹æ˜¯å·¦å­©å­
 			if (newpoint->parent->lchild && newpoint == newpoint->parent->lchild)
 			{
 				AVLnode* temp = newpoint;
-				while (temp->parent != k)//ÏòÉÏÑ°ÕÒ£¬´ËÊ±tempÎªkµÄº¢×Ó
+				while (temp->parent != k)//å‘ä¸Šå¯»æ‰¾ï¼Œæ­¤æ—¶tempä¸ºkçš„å­©å­
 					temp = temp->parent;
-				//ÔÚkµÄ×ó×ÓÊ÷µÄ×óº¢×ÓÖĞµÄ²åÈë
+				//åœ¨kçš„å·¦å­æ ‘çš„å·¦å­©å­ä¸­çš„æ’å…¥
 				if (k->lchild && temp == k->lchild)
 				{
-					AVLnode* top = k->parent;   //ÓÃtop¼ÇÂ¼×îĞ¡·ÇÆ½ºâ×ÓÊ÷¸ù½ÚµãµÄ¸¸½Úµã
-					AVLnode* k_tem = k;          //¼ÇÂ¼×îĞ¡·ÇÆ½ºâ×ÓÊ÷¸ù½Úµã
-					//Ğı×ª²Ù×÷£¬Ò»´ÎÓÒµ¥Ğı
+					AVLnode* top = k->parent;   //ç”¨topè®°å½•æœ€å°éå¹³è¡¡å­æ ‘æ ¹èŠ‚ç‚¹çš„çˆ¶èŠ‚ç‚¹
+					AVLnode* k_tem = k;          //è®°å½•æœ€å°éå¹³è¡¡å­æ ‘æ ¹èŠ‚ç‚¹
+					//æ—‹è½¬æ“ä½œï¼Œä¸€æ¬¡å³å•æ—‹
 					k->lchild = temp->rchild;
 					if (temp->rchild)
 						temp->rchild->parent = k;
 					temp->rchild = k;
 					k->parent = temp;
 					temp->parent = top;
-					//¸Ä±ä×îĞ¡·ÇÆ½ºâ×ÓÊ÷¸ù½ÚµãµÄ¸¸½ÚµãµÄº¢×ÓÖ¸Õë
+					//æ”¹å˜æœ€å°éå¹³è¡¡å­æ ‘æ ¹èŠ‚ç‚¹çš„çˆ¶èŠ‚ç‚¹çš„å­©å­æŒ‡é’ˆ
 					if (k_tem == top->lchild)
 						top->lchild = temp;
 					else if (k_tem == top->rchild)
 						top->rchild = temp;
-					//¸üĞÂÆ½ºâÒò×Ó
+					//æ›´æ–°å¹³è¡¡å› å­
 					tag_update(root);
 				}
-				//ÔÚkµÄÓÒ×ÓÊ÷µÄ×óº¢×ÓÖĞµÄ²åÈë
+				//åœ¨kçš„å³å­æ ‘çš„å·¦å­©å­ä¸­çš„æ’å…¥
 				else if (k->rchild && temp == k->rchild)
 				{
-					AVLnode* top = k->parent;   //ÓÃtop¼ÇÂ¼×îĞ¡·ÇÆ½ºâ×ÓÊ÷¸ù½ÚµãµÄ¸¸½Úµã
-					AVLnode* k_tem = k;          //¼ÇÂ¼×îĞ¡·ÇÆ½ºâ×ÓÊ÷¸ù½Úµã
-					// ÕÒµ½ k µÄÓÒ×ÓÊ÷µÄ×óº¢×Ó q
+					AVLnode* top = k->parent;   //ç”¨topè®°å½•æœ€å°éå¹³è¡¡å­æ ‘æ ¹èŠ‚ç‚¹çš„çˆ¶èŠ‚ç‚¹
+					AVLnode* k_tem = k;          //è®°å½•æœ€å°éå¹³è¡¡å­æ ‘æ ¹èŠ‚ç‚¹
+					// æ‰¾åˆ° k çš„å³å­æ ‘çš„å·¦å­©å­ q
 					AVLnode* q = temp->lchild;
-					// µÚÒ»´ÎĞı×ª£¨ÓÒĞı£©
+					// ç¬¬ä¸€æ¬¡æ—‹è½¬ï¼ˆå³æ—‹ï¼‰
 					temp->rchild = q->rchild;
 					if (q->rchild)
 						q->rchild->parent = temp;
 					q->rchild = temp;
 					temp->parent = q;
-					// µÚ¶ş´ÎĞı×ª£¨×óĞı£©
+					// ç¬¬äºŒæ¬¡æ—‹è½¬ï¼ˆå·¦æ—‹ï¼‰
 					k->rchild = q->lchild;
 					if (q->lchild)
 						q->lchild->parent = k;
 					q->lchild = k;
 					k->parent = q;
 					q->parent = top;
-					//¸Ä±ä×îĞ¡·ÇÆ½ºâ×ÓÊ÷¸ù½ÚµãµÄ¸¸½ÚµãµÄº¢×ÓÖ¸Õë
+					//æ”¹å˜æœ€å°éå¹³è¡¡å­æ ‘æ ¹èŠ‚ç‚¹çš„çˆ¶èŠ‚ç‚¹çš„å­©å­æŒ‡é’ˆ
 					if (k_tem == top->lchild)
 						top->lchild = temp;
 					else if (k_tem == top->rchild)
 						top->rchild = temp;
-					// ¸üĞÂÆ½ºâÒò×Ó
+					// æ›´æ–°å¹³è¡¡å› å­
 					tag_update(root);
 				}
 			}
-			//²åÈë½áµãÊÇÓÒº¢×Ó
+			//æ’å…¥ç»“ç‚¹æ˜¯å³å­©å­
 			else if (newpoint->parent->rchild && newpoint == newpoint->parent->rchild)
 			{
 				AVLnode* temp = newpoint;
-				while (temp->parent != k)//ÏòÉÏÑ°ÕÒ£¬´ËÊ±tempÎªkµÄº¢×Ó
+				while (temp->parent != k)//å‘ä¸Šå¯»æ‰¾ï¼Œæ­¤æ—¶tempä¸ºkçš„å­©å­
 					temp = temp->parent;
-				//ÔÚkµÄ×ó×ÓÊ÷µÄÓÒº¢×ÓÖĞµÄ²åÈë
+				//åœ¨kçš„å·¦å­æ ‘çš„å³å­©å­ä¸­çš„æ’å…¥
 				if (k->lchild && temp == k->lchild)
 				{
-					AVLnode* top = k->parent;   //ÓÃtop¼ÇÂ¼×îĞ¡·ÇÆ½ºâ×ÓÊ÷¸ù½ÚµãµÄ¸¸½Úµã
-					AVLnode* k_tem = k;          //¼ÇÂ¼×îĞ¡·ÇÆ½ºâ×ÓÊ÷¸ù½Úµã
+					AVLnode* top = k->parent;   //ç”¨topè®°å½•æœ€å°éå¹³è¡¡å­æ ‘æ ¹èŠ‚ç‚¹çš„çˆ¶èŠ‚ç‚¹
+					AVLnode* k_tem = k;          //è®°å½•æœ€å°éå¹³è¡¡å­æ ‘æ ¹èŠ‚ç‚¹
 					AVLnode* q = temp->rchild;
-					//µÚÒ»´Î×óµ¥Ğı
+					//ç¬¬ä¸€æ¬¡å·¦å•æ—‹
 					temp->rchild = q->lchild;
 					if (q->lchild)
 						q->lchild->parent = temp;
 					q->rchild = temp;
 					temp->parent = q;
-					//µÚ¶ş´ÎÓÒµ¥Ğı
+					//ç¬¬äºŒæ¬¡å³å•æ—‹
 					k->lchild = q->rchild;
 					if (q->rchild)
 						q->rchild->parent = k;
 					q->rchild = k;
 					k->parent = q;
 					q->parent = top;
-					//¸Ä±ä×îĞ¡·ÇÆ½ºâ×ÓÊ÷¸ù½ÚµãµÄ¸¸½ÚµãµÄº¢×ÓÖ¸Õë
+					//æ”¹å˜æœ€å°éå¹³è¡¡å­æ ‘æ ¹èŠ‚ç‚¹çš„çˆ¶èŠ‚ç‚¹çš„å­©å­æŒ‡é’ˆ
 					if (k_tem == top->lchild)
 						top->lchild = temp;
 					else if (k_tem == top->rchild)
 						top->rchild = temp;
-					//¸üĞÂÆ½ºâÒò×Ó
+					//æ›´æ–°å¹³è¡¡å› å­
 					tag_update(root);
 				}
-				//ÔÚkµÄÓÒ×ÓÊ÷µÄÓÒº¢×ÓÖĞµÄ²åÈë
+				//åœ¨kçš„å³å­æ ‘çš„å³å­©å­ä¸­çš„æ’å…¥
 				else if (k->lchild && temp == k->rchild)
 				{
-					AVLnode* top = k->parent;   //ÓÃtop¼ÇÂ¼×îĞ¡·ÇÆ½ºâ×ÓÊ÷¸ù½ÚµãµÄ¸¸½Úµã
-					AVLnode* k_tem = k;          //¼ÇÂ¼×îĞ¡·ÇÆ½ºâ×ÓÊ÷¸ù½Úµã
-					//Ğı×ª²Ù×÷£¬×óµ¥Ğı
+					AVLnode* top = k->parent;   //ç”¨topè®°å½•æœ€å°éå¹³è¡¡å­æ ‘æ ¹èŠ‚ç‚¹çš„çˆ¶èŠ‚ç‚¹
+					AVLnode* k_tem = k;          //è®°å½•æœ€å°éå¹³è¡¡å­æ ‘æ ¹èŠ‚ç‚¹
+					//æ—‹è½¬æ“ä½œï¼Œå·¦å•æ—‹
 					k->rchild = temp->lchild;
 					if (temp->lchild)
 						temp->lchild->parent = k;
 					temp->lchild = k;
 					k->parent = temp;
 					temp->parent = top;
-					//¸Ä±ä×îĞ¡·ÇÆ½ºâ×ÓÊ÷¸ù½ÚµãµÄ¸¸½ÚµãµÄº¢×ÓÖ¸Õë
+					//æ”¹å˜æœ€å°éå¹³è¡¡å­æ ‘æ ¹èŠ‚ç‚¹çš„çˆ¶èŠ‚ç‚¹çš„å­©å­æŒ‡é’ˆ
 					if (k_tem == top->lchild)
 						top->lchild = temp;
 					else if (k_tem == top->rchild)
 						top->rchild = temp;
-					//¸üĞÂÆ½ºâÒò×Ó
+					//æ›´æ–°å¹³è¡¡å› å­
 					tag_update(root);
 				}
 			}
@@ -331,7 +331,7 @@ public:
 	}
 
 
-	// ÖĞĞò±éÀú
+	// ä¸­åºéå†
 	void inorder_traversal(AVLnode* node) {
 		if (node != nullptr) {
 			inorder_traversal(node->lchild);
@@ -340,23 +340,23 @@ public:
 		}
 	}
 
-	// ´òÓ¡ÖĞĞò±éÀú½á¹û
+	// æ‰“å°ä¸­åºéå†ç»“æœ
 	void print_inorder() {
 		inorder_traversal(root);
 		cout << endl;
 	}
 };
 
-//²âÊÔº¯Êı
+//æµ‹è¯•å‡½æ•°
 void test01() {
 	AVLtree avl;
 
-	// »ù±¾²åÈë
+	// åŸºæœ¬æ’å…¥
 	vector<int> basic = { 1, 2,3 };
 	for (int num : basic) {
 		avl.insert(num);
 	}
-	cout << "»ù±¾²åÈëºóÖĞĞò±éÀú: ";
+	cout << "åŸºæœ¬æ’å…¥åä¸­åºéå†: ";
 	avl.print_inorder();
 }
 
